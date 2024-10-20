@@ -7,19 +7,35 @@ export async function POST(request: Request) {
     await dbConnect();
     try {
         const { username, email, password } = await request.json();
-        // YOU MAY WANT TO ADD SOME VALIDATION HERE
-
-        console.log({ username, email, password });
-
         const hashedPassword = await hash(password, 10);
 
+        const isExitUser = await UserModel.findOne({ email: email });
+
+        // If the user exists, return an appropriate message
+        if (isExitUser) {
+            return NextResponse.json({
+                success: false,
+                message: "This email is already registered, please login or enter new email",
+            });
+        }
+
+        // If user doesn't exist, create a new user
         const user = await UserModel.create({ username, email, hashedPassword });
 
-        if (user) console.log(user);
+        if (user) {
+            return NextResponse.json({
+                success: true,
+                message: "Registration successful.",
+            });
+        } else {
+            return NextResponse.json({
+                success: false,
+                message: "Registration failed, try again.",
+            });
+        }
+
 
     } catch (e) {
-        console.log({ e });
+        return NextResponse.json({ success: false, message: "An error occurred, try again." });
     }
-
-    return NextResponse.json({ message: "success" });
 }

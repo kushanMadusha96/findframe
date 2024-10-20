@@ -23,7 +23,7 @@ const handler = NextAuth({
             },
             async authorize(credentials, req) {
                 const response = await UserModel.findOne({ email: credentials?.email });
-                console.log(response)
+                // console.log(response)
 
                 const passwordCorrect = await compare(
                     credentials?.password || "",
@@ -34,7 +34,7 @@ const handler = NextAuth({
                     return {
                         id: response._id,
                         email: response.email,
-                        name: response.name
+                        name: response.username
                     };
                 }
 

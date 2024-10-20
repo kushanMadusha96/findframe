@@ -38,9 +38,9 @@ export default function NavBar() {
     }, [session]);
 
     useEffect(() => {
-        if (session) {
-            console.log(session)
-        }
+            // console.log(session)
+            // console.log("...................................")
+            // console.log(sessionUser)
     }, [session])
 
     const handleMenuClick = () => {
@@ -115,12 +115,12 @@ export default function NavBar() {
 
                             <Skeleton loading={isLoading} style={{ borderRadius: '100%' }}>
                                 <div className={styles.signInIcons}>
-                                    {!session &&
+                                    {session &&
                                         <div className={styles.avatar}>
                                             < Avathar />
                                         </div>
                                     }
-                                    {session &&
+                                    {!session &&
                                         <Link href="/login" className={`${currentPathname === '/login' ? styles.activeLink : styles.link} ${styles.btnSignIn}`}>Sign In</Link>
                                     }
                                 </div>
